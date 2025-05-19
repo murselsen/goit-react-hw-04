@@ -3,18 +3,17 @@ import Css from './ImageGallery.module.css';
 
 
 const ImageModal = ({ isOpen, closeModal, selectedImage }) => {
-    const pressKey = ({ key }) => {
-        if (key === 'Escape') {
-            closeModal();
-        }
-    }
     const handleClick = () => {
         closeModal();
     }
     return (
+        document.addEventListener('keydown', (event) => {
+            event.key === 'Escape' ? closeModal() : null;
+        }, false),
+
         <div
             className={`${Css.ImageModal_Overlay} ${isOpen ? Css.Open : ''}`}
-            onClick={handleClick} onKeyDown={pressKey} role="button" tabIndex={0}>
+            onClick={handleClick} role="button" tabIndex={0}>
             {selectedImage ? (
                 <div className={Css.ImageModal_Card}>
                     <img src={selectedImage.urls.regular} alt={selectedImage.description} />

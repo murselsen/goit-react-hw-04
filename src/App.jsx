@@ -117,7 +117,7 @@ const App = () => {
         openModal={openModal}
       />
       {
-        totalPage > 0 ? <LoadMoreBtn nextPage={nextPage} /> : null
+        totalPage > 0 && totalPage >= page ? <LoadMoreBtn nextPage={nextPage} /> : null
       }
       <ImageModal isOpen={modalIsOpen} closeModal={closeModal} selectedImage={selectedImage} />
     </div>
