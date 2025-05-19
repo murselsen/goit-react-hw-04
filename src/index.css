@@ -25,8 +25,7 @@ body,
 body {
   line-height: 1.5;
   font-family: var(--font-family);
-  background: #fff;
-  color: #000;
+  background: var(--color-primary);
 }
 
 img,

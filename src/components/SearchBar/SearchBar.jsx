@@ -18,11 +18,6 @@ const SearchBar = ({
             toast.success(`initiating a search for ${search.value} content...`, {
                 position: 'top-right',
                 duration: 2000,
-                style: {
-
-                    background: '#000',
-                    color: '#fff',
-                },
             });
 
             searchPhoto(search.value);

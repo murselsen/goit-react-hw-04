@@ -17,7 +17,6 @@
 .SearchBar_Input {
     background-color: var(--color-secondary);
     width: 90%;
-    /* flex: 9; */
     padding: 2% 18px;
     font-size: small;
     border-top-left-radius: 10px;
@@ -27,7 +26,6 @@
 .SearchBar_Button {
     background-color: var(--color-primary);
     width: 10%;
-    /* flex: 1; */
     color: white;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;

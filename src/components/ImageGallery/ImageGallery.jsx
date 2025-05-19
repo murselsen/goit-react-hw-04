@@ -4,9 +4,9 @@ import ContentLoader from 'react-content-loader'
 import { BiSolidErrorCircle } from "react-icons/bi";
 import { ErrorMessage } from '../index'
 
-const ImageGallery = ({ gallery, isGalleryLoading, isError }) => {
+const ImageGallery = ({ gallery, isLoading, isError, errorMessage }) => {
     return (<>
-        {isGalleryLoading ? (
+        {isLoading ? (
             <ContentLoader
                 width="100%"
                 height={575}
@@ -38,12 +38,12 @@ const ImageGallery = ({ gallery, isGalleryLoading, isError }) => {
                 ))}
             </ul>
 
-        ) : <ErrorMessage />)
+        ) : <ErrorMessage errorMessage={errorMessage} />)
         }
     </>)
 };
 
-const ImageCard = ({ data, }) => {
+const ImageCard = ({ data }) => {
     return (
         <li className={Css.ImageCard} onClick={() => { }}>
             <div className={Css.ImageCard_Img} >
@@ -57,14 +57,14 @@ const ImageCard = ({ data, }) => {
                 </span>
                 <p className={Css.ImageCard_Content_Description}>
                     <BiSolidErrorCircle />
-                    <p>{
+                    <span>{
                         data.description ?
                             data.description :
                             (data.alt_description ?
                                 data.alt_description :
                                 'No description available'
                             )
-                    }</p>
+                    }</span>
                 </p>
 
             </div>

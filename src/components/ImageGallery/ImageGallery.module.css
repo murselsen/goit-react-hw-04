@@ -5,7 +5,7 @@
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    gap: 20px;
+    gap: 30px;
     padding-block: 40px;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .ImageCard:hover {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: -1px 11px 15px 0px var(--color-tertiary);
     transform: scale(1.05);
 }
 

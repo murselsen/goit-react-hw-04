@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ImageGallery, SearchBar } from './components'
+import { ImageGallery, SearchBar, LoadMoreBtn } from './components'
 import toast, { Toaster } from 'react-hot-toast';
 import './App.css'
 
@@ -14,86 +14,99 @@ const App = () => {
 
   // Gallery
   const [gallery, setGallery] = useState([]);
-  const [gallerySearch, setGallerySearch] = useState();
-  const [galleryPage, setGalleryPage] = useState(1);
-  const [isGalleryLoading, setIsGalleryLoading] = useState(false);
-  const [photoModal, setPhotoModal] = useState(false);
-  const [isPhotoModal, setIsPhotoModal] = useState(false);
+  const [search, setSearch] = useState();
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const [totalPhotos, setTotalPhotos] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const searchPhoto = (term) => {
-    setGallerySearch(term);
+    setSearch(term);
     setGallery([]);
-    setGalleryPage(1);
+    setPage(1);
+    setTotalPage(0);
+    setTotalPhotos(0);
+    setErrorMessage(null);
     setIsError(false);
+    setIsLoading(true);
   }
-  const nextGalleryPage = () => {
-    setGalleryPage((prev) => prev + 1);
-  }
-
-  const togglePhotoModal = (photoData) => {
-    setIsPhotoModal(!isPhotoModal);
-    if (isPhotoModal) {
-      setPhotoModal(false);
-    } else {
-      setPhotoModal(photoData);
-    }
+  const nextPage = () => {
+    setPage((prev) => prev + 1);
   }
 
   useEffect(() => {
+
     const fetchPhotoApi = async () => {
-      setIsGalleryLoading(true);
       try {
         const response = await axios.get(API_URL, {
           params: {
-            query: gallerySearch,
-            page: galleryPage,
+            query: search,
+            page: page,
             per_page: 12,
             client_id: ACCESS_KEY
           }
         });
-        if (response.data.results.length < 1) {
-          toast.error(`The search for the ${gallerySearch} yielded no results`, {
+
+        const { total_pages, results, total } = response.data;
+        if (results.length < 1) {
+
+          toast.error(`The search for the ${search} yielded no results`, {
             duration: 2000,
             position: 'top-right',
-            style: {
-              background: '#333',
-              color: '#fff',
-              fontSize: '16px',
-            }
           });
           setIsError(true);
         } else {
-          setGallery((prev) => [...prev, ...response.data.results])
 
+          setGallery((prev) => [...prev, ...results])
+          setTotalPage(total_pages)
+          setTotalPhotos(total)
         }
       } catch (error) {
         console.log(error);
+        setIsError(true);
+        setErrorMessage(error);
       } finally {
         setTimeout(() => {
-          setIsGalleryLoading(false);
+          setIsLoading(false);
         }, 1000);
       }
     }
 
-    if (!gallerySearch) {
+    if (!search) {
       return;
     } else {
       fetchPhotoApi();
     }
-  }, [gallerySearch, galleryPage]);
+
+  }, [search, page]);
+
+  useEffect(() => {
+    if (totalPhotos < 1) {
+      return;
+    } else {
+      toast.success(`The search for the ${search} yielded ${totalPhotos} results`, {
+        duration: 2000,
+        position: 'top-right',
+      });
+    }
+
+  }, [totalPhotos]);
+
 
   return (
     <div className="App">
       <SearchBar searchPhoto={searchPhoto} />
       <ImageGallery
         gallery={gallery}
-        isGalleryLoading={isGalleryLoading}
-       
+        isLoading={isLoading}
         isError={isError}
-        togglePhotoModal={togglePhotoModal}
+        errorMessage={errorMessage}
       />
-      
+      {
+        totalPage > 0 ? <LoadMoreBtn nextPage={nextPage} /> : null
+      }
     </div>
   )
 }
