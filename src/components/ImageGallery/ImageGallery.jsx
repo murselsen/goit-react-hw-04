@@ -1,8 +1,10 @@
 import React from 'react';
 import Css from './ImageGallery.module.css'
 import ContentLoader from 'react-content-loader'
-const ImageGallery = ({ gallery, isGalleryLoading }) => {
-    console.log("Gallery Data: ", gallery);
+import { BiSolidErrorCircle } from "react-icons/bi";
+import { ErrorMessage } from '../index'
+
+const ImageGallery = ({ gallery, isGalleryLoading, isError }) => {
     return (<>
         {isGalleryLoading ? (
             <ContentLoader
@@ -29,9 +31,46 @@ const ImageGallery = ({ gallery, isGalleryLoading }) => {
                 <circle cx="210" cy="535" r="12" />
                 <circle cx="428" cy="536" r="12" />
             </ContentLoader>
-        ) : null
+        ) : (!isError ? (
+            <ul className={Css.ImageGallery}>
+                {gallery.map((item, index) => (
+                    <ImageCard key={index} data={item} />
+                ))}
+            </ul>
+
+        ) : <ErrorMessage />)
         }
     </>)
 };
+
+const ImageCard = ({ data, }) => {
+    return (
+        <li className={Css.ImageCard} onClick={() => { }}>
+            <div className={Css.ImageCard_Img} >
+                <img src={data.urls.small} alt={data.description} />
+            </div>
+            <div className={Css.ImageCard_Content} >
+                <span className={Css.ImageCard_Content_Hash}>
+                    {
+                        data.id
+                    }
+                </span>
+                <p className={Css.ImageCard_Content_Description}>
+                    <BiSolidErrorCircle />
+                    <p>{
+                        data.description ?
+                            data.description :
+                            (data.alt_description ?
+                                data.alt_description :
+                                'No description available'
+                            )
+                    }</p>
+                </p>
+
+            </div>
+        </li >
+    )
+
+}
 
 export default ImageGallery;

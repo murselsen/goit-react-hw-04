@@ -1,0 +1,73 @@
+.ImageGallery {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    gap: 20px;
+    padding-block: 40px;
+}
+
+.ImageCard {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    border-radius: 8px;
+    transition: box-shadow 0.2s ease, transform 0.4s ease;
+}
+
+.ImageCard:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+
+
+.ImageCard_Img img {
+    cursor: pointer;
+    object-fit: cover;
+    object-position: center;
+    width: 500px;
+    height: 250px;
+    transition: transform 0.8s ease;
+}
+
+.ImageCard_Content {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(1, 22, 39, 0.734);
+    color: var(--color-secondary);
+    border-radius: 8px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: max-content;
+    min-height: 100%;
+    z-index: 2;
+    transition: transform 0.8s ease;
+    padding: 20px;
+    cursor: pointer;
+    user-select: none;
+    overflow-y: auto;
+}
+
+.ImageCard_Content_Hash::before {
+    content: "#";
+    margin-right: 4px;
+    font-style: italic;
+}
+
+.ImageCard_Content_Description {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.ImageCard:hover .ImageCard_Content {
+    display: flex;
+}

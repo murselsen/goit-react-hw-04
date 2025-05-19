@@ -1,0 +1,25 @@
+.ErrorMessage {
+    max-width: 1024px;
+    width: 100%;
+    margin: 5% auto;
+    color: var(--color-primary);
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ErrorMessage_Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.ErrorMessage_Icon {
+    width: 35px;
+    height: 35px;
+}
+
+.ErrorMessage_Text {
+    padding: 10px 90px;
+}
