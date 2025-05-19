@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { ImageGallery, SearchBar, LoadMoreBtn } from './components'
+import { ImageGallery, SearchBar, LoadMoreBtn, ImageModal } from './components'
 import toast, { Toaster } from 'react-hot-toast';
 import './App.css'
-
+import Modal from 'react-modal';
 import axios from 'axios';
 
 const API_URL = "https://api.unsplash.com/search/photos";
@@ -21,6 +21,8 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const searchPhoto = (term) => {
     setSearch(term);
@@ -34,6 +36,15 @@ const App = () => {
   }
   const nextPage = () => {
     setPage((prev) => prev + 1);
+  }
+
+  const openModal = (data) => {
+    setModalIsOpen(true);
+    setSelectedImage(data);
+  };
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectedImage(null);
   }
 
   useEffect(() => {
@@ -103,10 +114,12 @@ const App = () => {
         isLoading={isLoading}
         isError={isError}
         errorMessage={errorMessage}
+        openModal={openModal}
       />
       {
         totalPage > 0 ? <LoadMoreBtn nextPage={nextPage} /> : null
       }
+      <ImageModal isOpen={modalIsOpen} closeModal={closeModal} selectedImage={selectedImage} />
     </div>
   )
 }
